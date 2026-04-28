@@ -30,7 +30,7 @@ scene.add(directionalLight);
 
 // Floor
 const floorTexture = new THREE.TextureLoader().load(
-  "./textures/grid.png"
+  './textures/grid.png'
 );
 floorTexture.repeat = new THREE.Vector2(500, 500);
 floorTexture.wrapS = THREE.RepeatWrapping;
@@ -69,7 +69,7 @@ const RIGHT_WHEEL_NAMES = [
 // Load GLB
 const loader = new GLTFLoader();
 loader.load(
-  "./models/tank.glb",
+  './models/tank.glb',
   (gltf) => {
     tank = gltf.scene;
     scene.add(tank);
