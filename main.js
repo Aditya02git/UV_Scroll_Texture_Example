@@ -28,13 +28,12 @@ directionalLight.position.set(0, 10, 0);
 directionalLight.castShadow = true;
 scene.add(directionalLight);
 
-
+// Floor
 const floorTexture = new THREE.TextureLoader().load('/textures/grid.png');
 floorTexture.repeat = new THREE.Vector2(500, 500);
 floorTexture.wrapS = THREE.ReplaceWrapping;
 floorTexture.wrapT = THREE.ReplaceWrapping;
 
-// Floor
 const plane = new THREE.Mesh(
   new THREE.PlaneGeometry(1000, 1000),
   new THREE.MeshStandardMaterial({ map: floorTexture })
@@ -70,7 +69,7 @@ loader.load("./models/tank.glb", (gltf) => {
   tank = gltf.scene;
   scene.add(tank);
 
-  // ✅ Same names that worked before
+  // Tracks
   const leftTrackNames  = ["Object_136"];
   const rightTrackNames = ["Object_139"];
 
@@ -98,7 +97,7 @@ loader.load("./models/tank.glb", (gltf) => {
       }
     }
 
-    // Wheels — no isMesh check, works on Object3D nodes too
+    // Wheels check 
     if (LEFT_WHEEL_NAMES.includes(child.name)) {
       leftWheels.push(child);
       console.log("Left wheel found:", child.name);
@@ -110,7 +109,7 @@ loader.load("./models/tank.glb", (gltf) => {
   });
 });
 
-// Scroll tracks
+// UV Texture Scrolling tracks
 function scrollTracks(meshes, amount) {
   for (const mesh of meshes) {
     if (mesh.material.map) {
@@ -119,7 +118,7 @@ function scrollTracks(meshes, amount) {
   }
 }
 
-// Rotate wheels on local Z axis
+// Rotate wheels on local X axis
 function rotateWheels(wheels, amount) {
   for (const w of wheels) {
     w.rotation.x -= amount;
