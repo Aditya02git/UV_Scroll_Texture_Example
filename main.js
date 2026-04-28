@@ -29,7 +29,7 @@ directionalLight.castShadow = true;
 scene.add(directionalLight);
 
 // Floor
-const floorTexture = new THREE.TextureLoader().load('/textures/grid.png');
+const floorTexture = new THREE.TextureLoader().load('https://cdn.jsdelivr.net/gh/Aditya02git/UV_Scroll_Texture_Example/textures/grid.png');
 floorTexture.repeat = new THREE.Vector2(500, 500);
 floorTexture.wrapS = THREE.ReplaceWrapping;
 floorTexture.wrapT = THREE.ReplaceWrapping;
