@@ -19,7 +19,7 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-// Light
+// Lights
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambientLight);
 
@@ -28,16 +28,18 @@ directionalLight.position.set(0, 10, 0);
 directionalLight.castShadow = true;
 scene.add(directionalLight);
 
-
-const floorTexture = new THREE.TextureLoader().load('/textures/grid.png');
-floorTexture.repeat = new THREE.Vector2(500, 500);
-floorTexture.wrapS = THREE.ReplaceWrapping;
-floorTexture.wrapT = THREE.ReplaceWrapping;
-
 // Floor
+const floorTexture = new THREE.TextureLoader().load(
+  "https://cdn.jsdelivr.net/gh/Aditya02git/UV_Scroll_Texture_Example/textures/grid.png"
+);
+floorTexture.repeat = new THREE.Vector2(500, 500);
+floorTexture.wrapS = THREE.RepeatWrapping;  // ✅ fixed
+floorTexture.wrapT = THREE.RepeatWrapping;  // ✅ fixed
+floorTexture.needsUpdate = true;
+
 const plane = new THREE.Mesh(
   new THREE.PlaneGeometry(1000, 1000),
-  new THREE.MeshStandardMaterial({ map: floorTexture })
+  new THREE.MeshStandardMaterial({ map: floorTexture }),
 );
 plane.rotation.x = -Math.PI / 2;
 plane.receiveShadow = true;
@@ -66,49 +68,44 @@ const RIGHT_WHEEL_NAMES = [
 
 // Load GLB
 const loader = new GLTFLoader();
-loader.load("./models/tank.glb", (gltf) => {
-  tank = gltf.scene;
-  scene.add(tank);
+loader.load(
+  "https://cdn.jsdelivr.net/gh/Aditya02git/UV_Scroll_Texture_Example/models/tank.glb",
+  (gltf) => {
+    tank = gltf.scene;
+    scene.add(tank);
 
-  // ✅ Same names that worked before
-  const leftTrackNames  = ["Object_136"];
-  const rightTrackNames = ["Object_139"];
+    const leftTrackNames  = ["Object_136"];
+    const rightTrackNames = ["Object_139"];
 
-  tank.traverse((child) => {
-    // Tracks — use previously working names
-    if (child.isMesh) {
-      if (leftTrackNames.includes(child.name)) {
-        if (child.material.map) {
-          child.material.map.wrapS = THREE.RepeatWrapping;
-          child.material.map.wrapT = THREE.RepeatWrapping;
-          child.material.map.needsUpdate = true;
+    tank.traverse((child) => {
+      if (child.isMesh) {
+        if (leftTrackNames.includes(child.name)) {
+          if (child.material.map) {
+            child.material.map.wrapS = THREE.RepeatWrapping;
+            child.material.map.wrapT = THREE.RepeatWrapping;
+            child.material.map.needsUpdate = true;
+          }
+          leftTrackMeshes.push(child);
         }
-        leftTrackMeshes.push(child);
-        console.log("Left track found:", child.name);
+        if (rightTrackNames.includes(child.name)) {
+          if (child.material.map) {
+            child.material.map.wrapS = THREE.RepeatWrapping;
+            child.material.map.wrapT = THREE.RepeatWrapping;
+            child.material.map.needsUpdate = true;
+          }
+          rightTrackMeshes.push(child);
+        }
       }
 
-      if (rightTrackNames.includes(child.name)) {
-        if (child.material.map) {
-          child.material.map.wrapS = THREE.RepeatWrapping;
-          child.material.map.wrapT = THREE.RepeatWrapping;
-          child.material.map.needsUpdate = true;
-        }
-        rightTrackMeshes.push(child);
-        console.log("Right track found:", child.name);
+      if (LEFT_WHEEL_NAMES.includes(child.name)) {
+        leftWheels.push(child);
       }
-    }
-
-    // Wheels — no isMesh check, works on Object3D nodes too
-    if (LEFT_WHEEL_NAMES.includes(child.name)) {
-      leftWheels.push(child);
-      console.log("Left wheel found:", child.name);
-    }
-    if (RIGHT_WHEEL_NAMES.includes(child.name)) {
-      rightWheels.push(child);
-      console.log("Right wheel found:", child.name);
-    }
-  });
-});
+      if (RIGHT_WHEEL_NAMES.includes(child.name)) {
+        rightWheels.push(child);
+      }
+    });
+  }
+);
 
 // Scroll tracks
 function scrollTracks(meshes, amount) {
@@ -119,7 +116,7 @@ function scrollTracks(meshes, amount) {
   }
 }
 
-// Rotate wheels on local Z axis
+// Rotate wheels
 function rotateWheels(wheels, amount) {
   for (const w of wheels) {
     w.rotation.x -= amount;
