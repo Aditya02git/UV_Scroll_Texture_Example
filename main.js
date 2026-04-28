@@ -29,6 +29,7 @@ directionalLight.castShadow = true;
 scene.add(directionalLight);
 
 // Floor
+<<<<<<< HEAD
 const floorTexture = new THREE.TextureLoader().load(
   "https://cdn.jsdelivr.net/gh/Aditya02git/UV_Scroll_Texture_Example/textures/grid.png"
 );
@@ -36,6 +37,12 @@ floorTexture.repeat = new THREE.Vector2(500, 500);
 floorTexture.wrapS = THREE.RepeatWrapping;  // ✅ fixed
 floorTexture.wrapT = THREE.RepeatWrapping;  // ✅ fixed
 floorTexture.needsUpdate = true;
+=======
+const floorTexture = new THREE.TextureLoader().load("https://threejs.org/examples/textures/grid.png");
+floorTexture.repeat = new THREE.Vector2(500, 500);
+floorTexture.wrapS = THREE.ReplaceWrapping;
+floorTexture.wrapT = THREE.ReplaceWrapping;
+>>>>>>> 4c807aedb7d81a134cc77aefba98658b5cbfadb1
 
 const plane = new THREE.Mesh(
   new THREE.PlaneGeometry(1000, 1000),
@@ -74,8 +81,14 @@ loader.load(
     tank = gltf.scene;
     scene.add(tank);
 
+<<<<<<< HEAD
     const leftTrackNames  = ["Object_136"];
     const rightTrackNames = ["Object_139"];
+=======
+  // Tracks
+  const leftTrackNames  = ["Object_136"];
+  const rightTrackNames = ["Object_139"];
+>>>>>>> 4c807aedb7d81a134cc77aefba98658b5cbfadb1
 
     tank.traverse((child) => {
       if (child.isMesh) {
@@ -100,14 +113,30 @@ loader.load(
       if (LEFT_WHEEL_NAMES.includes(child.name)) {
         leftWheels.push(child);
       }
+<<<<<<< HEAD
       if (RIGHT_WHEEL_NAMES.includes(child.name)) {
         rightWheels.push(child);
       }
     });
   }
 );
+=======
+    }
 
-// Scroll tracks
+    // Wheels check 
+    if (LEFT_WHEEL_NAMES.includes(child.name)) {
+      leftWheels.push(child);
+      console.log("Left wheel found:", child.name);
+    }
+    if (RIGHT_WHEEL_NAMES.includes(child.name)) {
+      rightWheels.push(child);
+      console.log("Right wheel found:", child.name);
+    }
+  });
+});
+>>>>>>> 4c807aedb7d81a134cc77aefba98658b5cbfadb1
+
+// UV Texture Scrolling tracks
 function scrollTracks(meshes, amount) {
   for (const mesh of meshes) {
     if (mesh.material.map) {
@@ -116,7 +145,11 @@ function scrollTracks(meshes, amount) {
   }
 }
 
+<<<<<<< HEAD
 // Rotate wheels
+=======
+// Rotate wheels on local X axis
+>>>>>>> 4c807aedb7d81a134cc77aefba98658b5cbfadb1
 function rotateWheels(wheels, amount) {
   for (const w of wheels) {
     w.rotation.x -= amount;
