@@ -30,11 +30,11 @@ scene.add(directionalLight);
 
 // Floor
 const floorTexture = new THREE.TextureLoader().load(
-  "https://cdn.jsdelivr.net/gh/Aditya02git/UV_Scroll_Texture_Example/textures/grid.png"
+  "./textures/grid.png"
 );
 floorTexture.repeat = new THREE.Vector2(500, 500);
-floorTexture.wrapS = THREE.RepeatWrapping;  // ✅ fixed
-floorTexture.wrapT = THREE.RepeatWrapping;  // ✅ fixed
+floorTexture.wrapS = THREE.RepeatWrapping;
+floorTexture.wrapT = THREE.RepeatWrapping; 
 floorTexture.needsUpdate = true;
 
 const plane = new THREE.Mesh(
@@ -69,7 +69,7 @@ const RIGHT_WHEEL_NAMES = [
 // Load GLB
 const loader = new GLTFLoader();
 loader.load(
-  "https://cdn.jsdelivr.net/gh/Aditya02git/UV_Scroll_Texture_Example/models/tank.glb",
+  "./models/tank.glb",
   (gltf) => {
     tank = gltf.scene;
     scene.add(tank);
